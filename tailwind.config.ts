@@ -7,7 +7,10 @@ export default {
   theme: {
   	extend: {
   		fontFamily: {
-  			primary: ['Inter', ...defaultTheme.fontFamily.sans]
+  			primary: [
+  				'Inter',
+                    ...defaultTheme.fontFamily.sans
+                ]
   		},
   		colors: {
   			primary: {
@@ -91,11 +94,29 @@ export default {
   				'100%': {
   					backgroundPosition: '700px 0'
   				}
+  			},
+  			'accordion-down': {
+  				from: {
+  					height: '0'
+  				},
+  				to: {
+  					height: 'var(--radix-accordion-content-height)'
+  				}
+  			},
+  			'accordion-up': {
+  				from: {
+  					height: 'var(--radix-accordion-content-height)'
+  				},
+  				to: {
+  					height: '0'
+  				}
   			}
   		},
   		animation: {
   			flicker: 'flicker 3s linear infinite',
-  			shimmer: 'shimmer 1.3s linear infinite'
+  			shimmer: 'shimmer 1.3s linear infinite',
+  			'accordion-down': 'accordion-down 0.2s ease-out',
+  			'accordion-up': 'accordion-up 0.2s ease-out'
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

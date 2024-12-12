@@ -13,13 +13,13 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 
-import { useDeleteParticipant } from "@/app/api/hooks/participant-hook";
+import { useDeleteEvent } from "@/app/api/hooks/eventx-hook";
 
 
 type IProps = { id: number };
 
 export function AlertDelete({ id }: IProps) {
-  const { mutateAsync } = useDeleteParticipant();
+  const { mutateAsync } = useDeleteEvent();
   const deleteViolation = mutateAsync;
   const handleDelete = async () => {
     await deleteViolation(id);

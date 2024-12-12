@@ -5,7 +5,6 @@ export type getParticipant = {
   email: string;
 };
 
-
 export type createParticipant = {
   event_id: number;
   name: string;

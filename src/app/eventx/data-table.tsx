@@ -35,14 +35,13 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-import { useDeleteParticipant, useGetAllParticipant } from "@/app/api/hooks/participant-hook"
+import { useDeleteEvent, useGetAllEvent } from "@/app/api/hooks/eventx-hook"
 import { AlertDelete } from "@/app/participant/modal-delete"
-import { getParticipant } from "@/constant/utils/participant"
-
+import { getEvent } from "@/constant/utils/eventx"
 
 let router: ReturnType<typeof useRouter>;
 const handleEdit = (row: any) => {
-  router.push(`/participant/${row.getValue("id")}`);
+  router.push(`/eventx/${row.getValue("id")}`);
 
 }
 let deleteViolation: any;
@@ -51,7 +50,7 @@ const handleDelete = async (row: any) => {
   window.location.reload();
 };
 
-export const columns: ColumnDef<getParticipant>[] = [
+export const columns: ColumnDef<getEvent>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -75,7 +74,7 @@ export const columns: ColumnDef<getParticipant>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "name",
+    accessorKey: "event_name",
     header: ({ column }) => {
       return (
         <Button
@@ -87,39 +86,54 @@ export const columns: ColumnDef<getParticipant>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("name")}</div>,
+    cell: ({ row }) => <div className="ml-4">{row.getValue("event_name")}</div>,
   },
   {
-    accessorKey: "email",
+    accessorKey: "date",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Email
+          Date
           <ArrowUpDown />
         </Button>
       )
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+    cell: ({ row }) => <div className="lowercase">{row.getValue("date")}</div>,
   },
   {
-    accessorFn: (row) => row.event_id,
-    accessorKey: "Event",
+    accessorKey: "location",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Event
+          Location
           <ArrowUpDown />
         </Button>
       )
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("Event")}</div>,
+    cell: ({ row }) => <div className="text-center">{row.getValue("location")}</div>,
   },
+  {
+    accessorKey: "details",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Details
+          <ArrowUpDown />
+        </Button>
+      )
+    },
+    cell: ({ row }) => <div className="text-justify">{row.getValue("details")}</div>,
+  },
+
   {
     accessorKey: "id",
     enableHiding: false,
@@ -151,11 +165,11 @@ export const columns: ColumnDef<getParticipant>[] = [
   },
 ]
 
-export function TableParticipant() {
-  const { data, isLoading, error } = useGetAllParticipant();
+export function TableEvent() {
+  const { data, isLoading, error } = useGetAllEvent();
 
   router = useRouter();
-  const { mutateAsync } = useDeleteParticipant();
+  const { mutateAsync } = useDeleteEvent();
   deleteViolation = mutateAsync;
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -191,9 +205,9 @@ export function TableParticipant() {
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter name..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("event_name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.getColumn("event_name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

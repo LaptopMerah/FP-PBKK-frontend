@@ -31,37 +31,42 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-import { useGetAllEvent } from "@/app/api/hooks/event-hook"
-import { useCreateParticipant } from "@/app/api/hooks/participant-hook"
+import { useGetAllEvent } from "@/app/api/hooks/eventx-hook"
+import { useCreateEvent } from "@/app/api/hooks/eventx-hook"
 import { getEvent } from "@/constant/utils/event"
+
+
 const formSchema = z.object({
-  name: z.string().min(2).max(50),
-  email: z.string().email(),
-  event_id: z.number(),
+  event_name: z.string().min(2).max(50),
+  date: z.string(),
+  location: z.string().min(2).max(50),
+  details: z.string().min(2).max(500),
+
 })
 export function CreateModal() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      event_id: 0,
+      event_name: "",
+      date: "",
+      location: "",
+      details: ""
     },
   })
   const { data: eventList } = useGetAllEvent();
-  const { mutate: createParticipant } = useCreateParticipant();
+  const { mutate: createEvent } = useCreateEvent();
 
   function onSubmit(data: z.infer<typeof formSchema>) {
-    createParticipant({ ...data }, {
+    createEvent({ ...data }, {
       onSuccess: () => {
         toast({
-          title: "Participant created successfully",
+          title: "Event created successfully",
         });
         window.location.reload();
       },
       onError: (error: any) => {
         toast({
-          title: "Error creating participant",
+          title: "Error creating event",
           description: error.message,
         });
       },
@@ -70,25 +75,25 @@ export function CreateModal() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="lg">Create Participant</Button>
+        <Button size="lg">Create Event</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create Participant</DialogTitle>
+          <DialogTitle>Create Event</DialogTitle>
           <DialogDescription>
-            Create a new Participant here. Click save when you're done.
+            Create a new Event here. Click save when you're done.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
             <FormField
               control={form.control}
-              name="name"
+              name="event_name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Iqbal Ramadhan" {...field} />
+                    <Input placeholder="Event Name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -96,12 +101,12 @@ export function CreateModal() {
             />
             <FormField
               control={form.control}
-              name="email"
+              name="date"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Date</FormLabel>
                   <FormControl>
-                    <Input placeholder="example@gmail.com" {...field} />
+                    <Input type="date" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -109,30 +114,33 @@ export function CreateModal() {
             />
             <FormField
               control={form.control}
-              name="event_id"
+              name="location"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Event</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value.toString()}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a verified email to display" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {eventList?.map((event: getEvent) => (
-                        <SelectItem key={event.id} value={event.id}>
-                          {event.event_name} - {event.date}
-                        </SelectItem>
-                      ))
-                      }
-                    </SelectContent>
-                  </Select>
+                  <FormLabel>Location</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Event Location" {...field} />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-
+            <FormField
+              control={form.control}
+              name="details"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Details</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Event Details"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <DialogFooter>
               <Button type="submit">Submit</Button>
             </DialogFooter>

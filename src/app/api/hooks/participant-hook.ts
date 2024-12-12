@@ -1,7 +1,5 @@
 'use client';
 
-
-
 import AxiosService from '@/app/api/axiosService';
 import { useQuery, useMutation } from '@tanstack/react-query';
 

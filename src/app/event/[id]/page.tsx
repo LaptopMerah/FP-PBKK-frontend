@@ -72,7 +72,6 @@ const ViolationDetailPage = ({ params }: { params: { id: number } }) => {
           toast({
             title: "Participant updated successfully",
           });
-        window.location.href = "/participant/";
         },
         onError: (error: any) => {
           toast({

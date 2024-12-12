@@ -1,9 +1,8 @@
 'use client';
 
-import { useGetAllParticipant } from "@/app/api/hooks/participant-hook";
 import Dashboard from "@/app/dashboard";
-import { CreateModal } from "@/app/participant/modal-create";
 import { TableParticipant } from "@/app/participant/data-table";
+import { CreateModal } from "@/app/participant/modal-create";
 
 export default function Participant() {
   return (
@@ -16,3 +15,4 @@ export default function Participant() {
     </Dashboard>
   );
 }
+  
