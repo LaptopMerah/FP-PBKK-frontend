@@ -2,7 +2,7 @@
 
 import Dashboard from "@/app/dashboard";
 import { TableEvent } from "@/app/eventx/data-table";
-import { CreateModal } from "@/app/eventx/modal-create";
+import { CreateModal } from "@/app/event/modal-create";
 
 export default function Event() {
   return (
