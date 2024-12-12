@@ -105,7 +105,7 @@ export const columns: ColumnDef<getParticipant>[] = [
     cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
   },
   {
-    accessorFn: (row) => row.event_id,
+    accessorFn: (row) => row.event_name,
     accessorKey: "Event",
     header: ({ column }) => {
       return (

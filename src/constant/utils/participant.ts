@@ -1,6 +1,7 @@
 export type getParticipant = {
   id: number;
   event_id: number;
+  event_name: string;
   name: string;
   email: string;
 };

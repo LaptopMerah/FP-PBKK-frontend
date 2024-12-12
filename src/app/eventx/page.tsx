@@ -1,8 +1,8 @@
 'use client';
 
 import Dashboard from "@/app/dashboard";
-import { TableEvent } from "@/app/eventx/data-table";
 import { CreateModal } from "@/app/eventx/modal-create";
+import { CardDemo } from "@/app/event/event-card";
 
 export default function Event() {
   return (
@@ -11,7 +11,7 @@ export default function Event() {
         <h1>All Event</h1>
         <CreateModal />
       </div>
-      <TableEvent />
+      <CardDemo />
     </Dashboard>
   );
 }
