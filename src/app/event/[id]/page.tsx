@@ -23,32 +23,34 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "@/hooks/use-toast";
 import {
-  useGetParticipant,
-  useUpdateParticipant,
-} from "@/app/api/hooks/participant-hook";
+  useGetEvent,
+  useUpdateEvent,
+} from "@/app/api/hooks/event-hook";
 import { useGetAllEvent } from "@/app/api/hooks/event-hook";
 import { getEvent } from "@/constant/utils/event";
 import Link from "next/link";
 
 const formSchema = z.object({
   id: z.number(),
-  name: z.string().min(2).max(50),
-  email: z.string().email(),
-  event_id: z.number(),
+  event_name: z.string().min(2).max(50),
+  date: z.string(),
+  location: z.string().min(2).max(50),
+  details: z.string().min(2).max(500),
 });
 
 const ViolationDetailPage = ({ params }: { params: { id: number } }) => {
-  const { data, isLoading } = useGetParticipant(params.id);
+  const { data, isLoading } = useGetEvent(params.id);
   const { data: eventList } = useGetAllEvent();
-  const { mutate: updateParticipant } = useUpdateParticipant();
+  const { mutate: updateEvent } = useUpdateEvent();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       id: 0,
-      name: "",
-      email: "",
-      event_id: 0,
+      event_name: "",
+      date: "",
+      location: "",
+      details: ""
     },
   });
 
@@ -57,25 +59,27 @@ const ViolationDetailPage = ({ params }: { params: { id: number } }) => {
     if (data) {
       form.reset({
         id: data.id,
-        name: data.name,
-        email: data.email,
-        event_id: data.event_id,
+        event_name: data.event_name,
+        date: data.date,
+        location: data.location,
+        details: data.details
       });
     }
   }, [data]);
 
   function onSubmit(formData: z.infer<typeof formSchema>) {
-    updateParticipant(
+    updateEvent(
       { ...formData },
       {
         onSuccess: () => {
           toast({
-            title: "Participant updated successfully",
+            title: "Event updated successfully",
           });
+          window.location.href = "/event/";
         },
         onError: (error: any) => {
           toast({
-            title: "Error updating participant",
+            title: "Error updating event",
             description: error.message,
           });
         },
@@ -87,16 +91,16 @@ const ViolationDetailPage = ({ params }: { params: { id: number } }) => {
     <section className="max-w-screen-md h-full flex flex-col m-auto items-center justify-center gap-5 mt-20">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-5">
-          <h1 className="text-center">Edit Participant</h1>
+          <h1 className="text-center">Edit Event</h1>
           <div className="w-full rounded-xl bg-muted/50 p-5">
             <FormField
               control={form.control}
-              name="name"
+              name="event_name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Iqbal Ramadhan" {...field} />
+                    <Input placeholder="Event Name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -104,12 +108,12 @@ const ViolationDetailPage = ({ params }: { params: { id: number } }) => {
             />
             <FormField
               control={form.control}
-              name="email"
+              name="date"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Date</FormLabel>
                   <FormControl>
-                    <Input placeholder="example@gmail.com" {...field} />
+                    <Input type="date" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -117,30 +121,29 @@ const ViolationDetailPage = ({ params }: { params: { id: number } }) => {
             />
             <FormField
               control={form.control}
-              name="event_id"
+              name="location"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Event</FormLabel>
-                  <Select
-                    onValueChange={(value) => field.onChange(Number(value))}
-                    value={field.value.toString()}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select an event" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {eventList?.map((event: getEvent) => (
-                        <SelectItem
-                          key={event.id}
-                          value={event.id.toString()}
-                        >
-                          {event.event_name} - {event.date}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormLabel>Location</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Event Location" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="details"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Details</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Event Details"
+                      {...field}
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -148,12 +151,15 @@ const ViolationDetailPage = ({ params }: { params: { id: number } }) => {
           </div>
           <div className="flex w-full justify-between">
 
-            <Link href="/participant/" className="w-[49%]">
+            <Link href="/event/" className="w-[49%]">
               <Button size="lg" className="w-full" variant="outline">
                 Back
               </Button>
-            </Link>
-            <Button type="submit" className="w-[49%]">Submit</Button>
+            </Link >
+            
+            <Button type="submit" className="w-[49%]">
+              Submit
+            </Button>
           </div>
         </form>
       </Form>

@@ -29,6 +29,10 @@ const CardHeader = React.forwardRef<
 ))
 CardHeader.displayName = "CardHeader"
 
+export const CardBody = ({ children }: { children: React.ReactNode }) => {
+  return <div className="card-body">{children}</div>;
+};
+
 const CardTitle = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>

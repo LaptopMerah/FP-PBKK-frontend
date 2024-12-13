@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import {
   ColumnDef,
@@ -11,21 +11,21 @@ import {
   SortingState,
   useReactTable,
   VisibilityState,
-} from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
-import { useRouter } from "next/navigation"
-import * as React from "react"
+} from '@tanstack/react-table';
+import { ArrowUpDown, ChevronDown, MoreHorizontal } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import * as React from 'react';
 
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
 import {
   Table,
   TableBody,
@@ -33,137 +33,138 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from '@/components/ui/table';
 
-import { useDeleteEvent, useGetAllEvent } from "@/app/api/hooks/eventx-hook"
-import { AlertDelete } from "@/app/participant/modal-delete"
-import { getEvent } from "@/constant/utils/eventx"
+import { useDeleteEvent, useGetAllEvent } from '@/app/api/hooks/eventx-hook';
+import { getEvent } from '@/constant/utils/eventx';
 
 let router: ReturnType<typeof useRouter>;
 const handleEdit = (row: any) => {
-  router.push(`/eventx/${row.getValue("id")}`);
-
-}
+  router.push(`/eventx/${row.getValue('id')}`);
+};
 let deleteViolation: any;
 const handleDelete = async (row: any) => {
-  await deleteViolation(row.getValue("id"));
+  await deleteViolation(row.getValue('id'));
   window.location.reload();
 };
 
 export const columns: ColumnDef<getEvent>[] = [
   {
-    id: "select",
+    id: 'select',
     header: ({ table }) => (
       <Checkbox
         checked={
           table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
+          (table.getIsSomePageRowsSelected() && 'indeterminate')
         }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
+        aria-label='Select all'
       />
     ),
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
+        aria-label='Select row'
       />
     ),
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "event_name",
+    accessorKey: 'event_name',
     header: ({ column }) => {
       return (
         <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           Name
           <ArrowUpDown />
         </Button>
-      )
+      );
     },
-    cell: ({ row }) => <div className="ml-4">{row.getValue("event_name")}</div>,
+    cell: ({ row }) => <div className='ml-4'>{row.getValue('event_name')}</div>,
   },
   {
-    accessorKey: "date",
+    accessorKey: 'date',
     header: ({ column }) => {
       return (
         <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           Date
           <ArrowUpDown />
         </Button>
-      )
+      );
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("date")}</div>,
+    cell: ({ row }) => <div className='lowercase'>{row.getValue('date')}</div>,
   },
   {
-    accessorKey: "location",
+    accessorKey: 'location',
     header: ({ column }) => {
       return (
         <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           Location
           <ArrowUpDown />
         </Button>
-      )
+      );
     },
-    cell: ({ row }) => <div className="text-center">{row.getValue("location")}</div>,
+    cell: ({ row }) => (
+      <div className='text-center'>{row.getValue('location')}</div>
+    ),
   },
   {
-    accessorKey: "details",
+    accessorKey: 'details',
     header: ({ column }) => {
       return (
         <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           Details
           <ArrowUpDown />
         </Button>
-      )
+      );
     },
-    cell: ({ row }) => <div className="text-justify">{row.getValue("details")}</div>,
+    cell: ({ row }) => (
+      <div className='text-justify'>{row.getValue('details')}</div>
+    ),
   },
 
   {
-    accessorKey: "id",
+    accessorKey: 'id',
     enableHiding: false,
     header: () => <div>Actions</div>,
     cell: ({ row }) => {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
+            <Button variant='ghost' className='h-8 w-8 p-0'>
+              <span className='sr-only'>Open menu</span>
               <MoreHorizontal />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="center">
-            <DropdownMenuItem
-              onClick={() => handleEdit(row)}
-            >
+          <DropdownMenuContent align='center'>
+            <DropdownMenuItem onClick={() => handleEdit(row)}>
               Edit
             </DropdownMenuItem>
-            <DropdownMenuItem className="text-red-600"
+            <DropdownMenuItem
+              className='text-red-600'
               onClick={() => handleDelete(row)}
             >
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      )
+      );
     },
   },
-]
+];
 
 export function TableEvent() {
   const { data, isLoading, error } = useGetAllEvent();
@@ -171,15 +172,14 @@ export function TableEvent() {
   router = useRouter();
   const { mutateAsync } = useDeleteEvent();
   deleteViolation = mutateAsync;
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
-  )
-
+  );
 
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
+    React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
     data: data ?? [],
@@ -198,26 +198,28 @@ export function TableEvent() {
       columnVisibility,
       rowSelection,
     },
-  })
+  });
 
   return (
-    <div className="w-full rounded-xl bg-muted/50 px-5">
-      <div className="flex items-center py-4">
+    <div className='w-full rounded-xl bg-muted/50 px-5'>
+      <div className='flex items-center py-4'>
         <Input
-          placeholder="Filter name..."
-          value={(table.getColumn("event_name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("event_name")?.setFilterValue(event.target.value)
+          placeholder='Filter name...'
+          value={
+            (table.getColumn('event_name')?.getFilterValue() as string) ?? ''
           }
-          className="max-w-sm"
+          onChange={(event) =>
+            table.getColumn('event_name')?.setFilterValue(event.target.value)
+          }
+          className='max-w-sm'
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
+            <Button variant='outline' className='ml-auto'>
               Columns <ChevronDown />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align='end'>
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
@@ -225,7 +227,7 @@ export function TableEvent() {
                 return (
                   <DropdownMenuCheckboxItem
                     key={column.id}
-                    className="capitalize"
+                    className='capitalize'
                     checked={column.getIsVisible()}
                     onCheckedChange={(value) =>
                       column.toggleVisibility(!!value)
@@ -233,29 +235,28 @@ export function TableEvent() {
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>
-                )
+                );
               })}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
 
-
-      <div className="rounded-md border">
+      <div className='rounded-md border'>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="bg-muted">
+              <TableRow key={headerGroup.id} className='bg-muted'>
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
-                  )
+                  );
                 })}
               </TableRow>
             ))}
@@ -265,7 +266,7 @@ export function TableEvent() {
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
+                  data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -281,7 +282,7 @@ export function TableEvent() {
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className='h-24 text-center'
                 >
                   No results.
                 </TableCell>
@@ -290,23 +291,23 @@ export function TableEvent() {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
+      <div className='flex items-center justify-end space-x-2 py-4'>
+        <div className='flex-1 text-sm text-muted-foreground'>
+          {table.getFilteredSelectedRowModel().rows.length} of{' '}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        <div className="space-x-2">
+        <div className='space-x-2'>
           <Button
-            variant="outline"
-            size="sm"
+            variant='outline'
+            size='sm'
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
             Previous
           </Button>
           <Button
-            variant="outline"
-            size="sm"
+            variant='outline'
+            size='sm'
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
@@ -315,5 +316,5 @@ export function TableEvent() {
         </div>
       </div>
     </div>
-  )
+  );
 }

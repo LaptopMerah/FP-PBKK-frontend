@@ -1,4 +1,4 @@
-import { Trash2 } from "lucide-react";
+import { Trash2 } from 'lucide-react';
 
 import {
   AlertDialog,
@@ -10,11 +10,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
 
-import { useDeleteEvent } from "@/app/api/hooks/eventx-hook";
-
+import { useDeleteEvent } from '@/app/api/hooks/eventx-hook';
 
 type IProps = { id: number };
 
@@ -27,7 +26,12 @@ export function AlertDelete({ id }: IProps) {
   };
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>        <Button size="icon" variant="ghost">    <Trash2 className="text-red-600" /></Button>
+      <AlertDialogTrigger asChild>
+        {' '}
+        <Button size='icon' variant='ghost'>
+          {' '}
+          <Trash2 className='text-red-600' />
+        </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
@@ -39,7 +43,9 @@ export function AlertDelete({ id }: IProps) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={() => handleDelete()}>Continue</AlertDialogAction>
+          <AlertDialogAction onClick={() => handleDelete()}>
+            Continue
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

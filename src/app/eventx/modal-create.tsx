@@ -1,10 +1,10 @@
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import { toast } from "@/hooks/use-toast"
+import { toast } from '@/hooks/use-toast';
 
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -13,7 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -21,63 +21,56 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
-import { useGetAllEvent } from "@/app/api/hooks/eventx-hook"
-import { useCreateEvent } from "@/app/api/hooks/eventx-hook"
-import { getEvent } from "@/constant/utils/event"
-
+import { useGetAllEvent } from '@/app/api/hooks/eventx-hook';
+import { useCreateEvent } from '@/app/api/hooks/eventx-hook';
 
 const formSchema = z.object({
   event_name: z.string().min(2).max(50),
   date: z.string(),
   location: z.string().min(2).max(50),
   details: z.string().min(2).max(500),
-
-})
+});
 export function CreateModal() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      event_name: "",
-      date: "",
-      location: "",
-      details: ""
+      event_name: '',
+      date: '',
+      location: '',
+      details: '',
     },
-  })
+  });
   const { data: eventList } = useGetAllEvent();
   const { mutate: createEvent } = useCreateEvent();
 
   function onSubmit(data: z.infer<typeof formSchema>) {
-    createEvent({ ...data }, {
-      onSuccess: () => {
-        toast({
-          title: "Event created successfully",
-        });
-        window.location.reload();
-      },
-      onError: (error: any) => {
-        toast({
-          title: "Error creating event",
-          description: error.message,
-        });
-      },
-    });
+    createEvent(
+      { ...data },
+      {
+        onSuccess: () => {
+          toast({
+            title: 'Event created successfully',
+          });
+          window.location.reload();
+        },
+        onError: (error: any) => {
+          toast({
+            title: 'Error creating event',
+            description: error.message,
+          });
+        },
+      }
+    );
   }
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="lg">Create Event</Button>
+        <Button size='lg'>Create Event</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
           <DialogTitle>Create Event</DialogTitle>
           <DialogDescription>
@@ -85,15 +78,15 @@ export function CreateModal() {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-2'>
             <FormField
               control={form.control}
-              name="event_name"
+              name='event_name'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Event Name" {...field} />
+                    <Input placeholder='Event Name' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -101,12 +94,12 @@ export function CreateModal() {
             />
             <FormField
               control={form.control}
-              name="date"
+              name='date'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Date</FormLabel>
                   <FormControl>
-                    <Input type="date" {...field} />
+                    <Input type='date' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -114,12 +107,12 @@ export function CreateModal() {
             />
             <FormField
               control={form.control}
-              name="location"
+              name='location'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Location</FormLabel>
                   <FormControl>
-                    <Input placeholder="Event Location" {...field} />
+                    <Input placeholder='Event Location' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -127,26 +120,23 @@ export function CreateModal() {
             />
             <FormField
               control={form.control}
-              name="details"
+              name='details'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Details</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Event Details"
-                      {...field}
-                    />
+                    <Input placeholder='Event Details' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <DialogFooter>
-              <Button type="submit">Submit</Button>
+              <Button type='submit'>Submit</Button>
             </DialogFooter>
           </form>
         </Form>
       </DialogContent>
-    </Dialog >
-  )
+    </Dialog>
+  );
 }

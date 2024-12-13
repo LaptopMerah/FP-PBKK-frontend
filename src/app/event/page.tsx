@@ -1,17 +1,17 @@
 'use client';
 
-import Dashboard from "@/app/dashboard";
-import { TableEvent } from "@/app/eventx/data-table";
-import { CreateModal } from "@/app/event/modal-create";
+import Dashboard from '@/app/dashboard';
+import { CardDemo } from '@/app/event/event-card';
+import { CreateModal } from '@/app/event/modal-create';
 
 export default function Event() {
   return (
-    <Dashboard breadcrumb="Event">
-      <div className="flex justify-between">
+    <Dashboard breadcrumb='Event'>
+      <div className='flex justify-between'>
         <h1>All Event</h1>
         <CreateModal />
       </div>
-      <TableEvent />
+      <CardDemo />
     </Dashboard>
   );
 }
